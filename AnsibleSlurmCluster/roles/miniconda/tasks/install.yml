@@ -1,0 +1,24 @@
+---
+- name: Create directory for miniconda
+  file:
+    path: "{{ miniconda_directory }}"
+    state: directory
+
+- name: Download .sh installation file
+  get_url:
+    url: "{{ miniconda_url }}"
+    dest: "{{ miniconda_sh_destination }}"
+
+- name: Execute .sh file
+  shell: "bash {{ miniconda_sh_destination }} -b -u -p {{ miniconda_directory }}"
+
+- name: Clean up
+  file:
+    path: "{{ miniconda_sh_destination }}"
+    state: absent
+
+- name: Initialize bash
+  shell: "{{ miniconda_bin }} init bash"
+
+- name: Initialize zsh
+  shell: "{{ miniconda_bin }} init zsh"

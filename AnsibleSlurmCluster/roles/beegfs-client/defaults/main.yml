@@ -1,0 +1,21 @@
+---
+vault_base_path: "secrets/data/beegfs"
+vault_connauthfile_key: "connauthfile-b64"
+
+beegfs_version: "7.4.1"
+beegfs_gpg_key: "https://www.beegfs.io/release/beegfs_{{ beegfs_version }}/gpg/GPG-KEY-beegfs"
+beegfs_repository: "deb https://www.beegfs.io/release/beegfs_{{ beegfs_version }} jammy non-free"
+beegfs_repo_filename: "beegfs.list"
+beegfs_client_packages:
+  - beegfs-client
+  - beegfs-storage
+  - beegfs-helperd
+  - beeond
+
+beegfs_helperd_path: "/etc/beegfs/beegfs-helperd.conf"
+beegfs_storage_path: "/etc/beegfs/beegfs-storage.conf"
+beegfs_client_path: "/etc/beegfs/beegfs-client.conf"
+
+connauthfile_shell_command: "dd if=/dev/random of=/etc/beegfs/connauthfile bs=128 count=1"
+
+...

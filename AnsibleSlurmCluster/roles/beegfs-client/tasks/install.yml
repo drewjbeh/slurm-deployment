@@ -1,0 +1,21 @@
+---
+- name: Add BeeGFS GPG key.
+  apt_key:
+    url: "{{ beegfs_gpg_key }}"
+    state: present
+
+- name: Add BeegFS repository.
+  apt_repository:
+    repo: "{{ beegfs_repository }}"
+    filename: "{{ beegfs_repo_filename }}"
+    state: present
+
+- name: Update apt repositories.
+  apt:
+    update_cache: yes
+
+- name: Install BeeGFS packages.
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ beegfs_client_packages }}"

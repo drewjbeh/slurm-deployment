@@ -1,0 +1,6 @@
+---
+
+- name: Check if prometheus is installed already.
+  stat:
+    path: "{{ usr_path }}/prometheus"
+  register: should_install

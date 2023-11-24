@@ -1,0 +1,6 @@
+---
+vault_base_path: "secrets/data/{{ secret_path }}"
+secret_path: ""
+vault_secret_key: ""
+shell_command: "sudo su -c 'dd if=/dev/urandom bs={{ bs }} count={{ count }}' > /home/ubuntu/{{ vault_secret_key }}"
+generate_locally: false

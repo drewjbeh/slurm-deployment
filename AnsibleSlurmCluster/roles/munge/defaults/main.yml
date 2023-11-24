@@ -1,0 +1,10 @@
+---
+vault_base_path: "secrets/data/slurm"
+vault_munge_key: "munge-key-b64"
+
+create_munge_key_command: "sudo su -c 'dd if=/dev/urandom bs=1 count=1024'"
+
+munge:
+  - libmunge2
+  - libmunge-dev
+  - munge

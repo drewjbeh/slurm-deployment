@@ -1,0 +1,12 @@
+---
+- copy:
+    src: '/home/ubuntu/munge'
+    dest: '/etc/munge/munge.key'
+
+- name: Set permissions for /etc/munge/munge.key
+  file:
+    path: /etc/munge/munge.key
+    mode: 0400
+  notify: munge
+
+

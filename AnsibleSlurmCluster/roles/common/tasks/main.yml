@@ -1,0 +1,11 @@
+---
+- name: Update apt repository.
+  apt:
+    update_cache: true
+
+- name: Install packages.
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages_to_install }}"
+

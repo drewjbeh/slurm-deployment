@@ -1,0 +1,30 @@
+---
+- name: beegfs-helperd
+  systemd:
+    name: beegfs-helperd
+    daemon-reload: true
+    state: restarted
+  become: true
+
+- name: beegfs-storage
+  systemd:
+    name: beegfs-storage
+    daemon-reload: true
+    state: restarted
+  become: true
+
+- name: beegfs-client
+  systemd:
+    name: "{{ item }}"
+    daemon-reload: true
+    state: restarted
+  become: true
+  with_items:
+    - beegfs-helperd
+    - beegfs-client
+  retries: 3
+  delay: 3
+  register: result
+  until: result is success
+
+...

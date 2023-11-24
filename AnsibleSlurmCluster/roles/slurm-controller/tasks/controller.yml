@@ -1,0 +1,81 @@
+---
+- name: Create the slurm group
+  become: true
+  group:
+    name: slurm
+    gid: 967
+
+- name: Install Slurm packages.
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ slurm }}"
+
+- name: Create the slurm user
+  become: true
+  user:
+    name: slurm
+    comment: "SLURM workload manager"
+    uid: 967
+    group: slurm
+    home: /var/lib/slurm
+    shell: /bin/bash
+    createhome: yes
+
+- name: Create /run/slurm directory
+  file:
+    path: /run/slurm
+    state: directory
+    owner: slurm
+    group: slurm
+
+- name: Create /var/spool/slurm/ctld directory
+  file:
+    path: /var/spool/slurm/ctld
+    state: directory
+    recurse: true
+    owner: slurm
+    group: slurm
+    mode: "0755"
+
+- name: Upload cgroup.conf file.
+  template:
+    src: templates/cgroup.conf
+    dest: /etc/slurm/cgroup.conf
+
+- name: Upload slurmdbd.conf file.
+  template:
+    src: slurmdbd.conf
+    dest: /etc/slurm/slurmdbd.conf
+
+- name: Upload slurm.conf file.
+  template:
+    src: slurm.conf.j2
+    dest: /etc/slurm/slurm.conf
+
+- name: Change file ownership and group for /etc/slurm/slurm.conf
+  file:
+    path: /etc/slurm/slurm.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Change file ownership and group for /etc/slurm/slurmdbd.conf
+  file:
+    path: /etc/slurm/slurmdbd.conf
+    owner: slurm
+    group: slurm
+    mode: "0600"
+
+- name: Restart slurmdbd service.
+  systemd:
+    name: slurmdbd
+    state: restarted
+    enabled: yes
+
+- name: Restart slurmctld service.
+  systemd:
+    name: slurmctld
+    state: restarted
+    enabled: yes
+

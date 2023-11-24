@@ -1,0 +1,16 @@
+---
+- name: Import Grafana GPG Key
+  apt_key:
+    url: "{{ gpg_key }}"
+    state: present
+
+- name: Add Grafana APT Repository
+  apt_repository:
+    repo: "{{ repo }}"
+    state: present
+    filename: grafana
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present

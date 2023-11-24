@@ -1,0 +1,26 @@
+---
+required_packages:
+  - automake
+  - libfuse-dev
+  - libgpgme11-dev
+  - libglib2.0-dev
+  - libseccomp-dev
+  - libssl-dev
+  - libtool
+  - runc
+  - squashfs-tools
+  - squashfs-tools-ng
+
+go_version: "1.21.0"
+go_os: "linux"
+go_arch: "amd64"
+go_url: "https://dl.google.com/go/go{{ go_version }}.{{ go_os }}-{{ go_arch }}.tar.gz"
+go_path: "$PATH:/usr/local/go/bin"
+
+singularity_version: "4.0.1"
+singularity_url: "https://github.com/sylabs/singularity/releases/download/v{{ singularity_version }}/singularity-ce-{{ singularity_version }}.tar.gz"
+singularity_download_path: "/home/ubuntu/go/src/github.com/sylabs"
+singularity_folder_path: "{{ singularity_download_path }}/singularity-ce-{{ singularity_version }}"
+
+home_directory: "/home/ubuntu"
+bashrc_path: "{{ home_directory }}/.bashrc"

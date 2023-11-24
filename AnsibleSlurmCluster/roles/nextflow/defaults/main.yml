@@ -1,0 +1,5 @@
+---
+nextflow_install_dest: "/usr/bin/nextflow"
+nextflow_version: "23.04.2"
+nextflow_url: "https://github.com/nextflow-io/nextflow/releases/download/v{{ nextflow_version }}/nextflow-{{ nextflow_version }}-all"
+export_path: 'export PATH="/usr/bin/nextflow:$PATH"'

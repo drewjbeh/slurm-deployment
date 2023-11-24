@@ -1,0 +1,51 @@
+---
+- name: Create Prometheus group
+  group:
+    name: prometheus
+    system: yes
+
+- name: Create Prometheus user
+  user:
+    name: prometheus
+    shell: /sbin/nologin
+    system: yes
+    group: prometheus
+
+- name: Create prometheus directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop: "{{ prometheus_directories }}"
+
+- name: Download prometheus repository
+  get_url:
+    url: "{{ prometheus_repository }}"
+    dest: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+
+- name: Extract Prometheus tar
+  unarchive:
+    src: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+    dest: "/tmp"
+    remote_src: yes
+
+- name: Move prometheus files to their designated location
+  command:
+    cmd: "sudo mv {{ item.from }} {{ item.to }}"
+  with_items: "{{ prometheus_move }}"
+
+- name: Change file ownership.
+  file:
+    path: "{{ item }}"
+    owner: prometheus
+    group: prometheus
+    recurse: true
+  loop: "{{ change_ownership }}"
+
+- name: Create prometheus systemd service
+  template:
+    src: prometheus-service.service.j2
+    dest: "{{ prometheus_service_path }}"
+    owner: prometheus
+    group: prometheus
+    mode: "0644"

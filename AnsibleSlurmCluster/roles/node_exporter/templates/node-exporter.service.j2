@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus Node Exporter
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/node_exporter_{{ node_exporter_version }} \
+  --web.listen-address={{ ansible_host_v4 }}:{{ node_exporter_port }} \
+
+SyslogIdentifier=prometheus_exporter_node
+
+[Install]
+WantedBy=multi-user.target

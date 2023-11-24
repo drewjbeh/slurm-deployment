@@ -1,0 +1,10 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ required_packages }}"
+
+# glib is not a library, instead, it's a collection of libraries/dependencies. So ansible cannot find the library to install, but apt-get is able to.
+- name: install glib
+  command: "sudo apt-get install glib-2.0 -y"

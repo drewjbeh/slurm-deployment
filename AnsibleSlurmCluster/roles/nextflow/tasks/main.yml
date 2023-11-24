@@ -1,0 +1,46 @@
+---
+- name: Install Java
+  apt:
+    name: openjdk-11-jre-headless
+    state: present
+
+- name: Create install directory
+  file:
+    path: /usr/bin/nextflow
+    state: directory
+
+- name: Download and install nextflow.
+  get_url:
+    url: "{{ nextflow_url }}"
+    dest: "{{ nextflow_install_dest }}"
+
+- name: Allow nextflow execution
+  file:
+    dest: "{{ nextflow_install_dest }}/nextflow-{{ nextflow_version }}-all"
+    mode: a+x
+    owner: root
+
+- name: Rename from "nextflow-{{ nextflow_version }}-all" to "nextflow"
+  command: mv /usr/bin/nextflow/nextflow-{{ nextflow_version }}-all /usr/bin/nextflow/nextflow
+
+- name: Add nextflow to PATH
+  lineinfile:
+    path: /home/ubuntu/.bashrc
+    line: "{{ export_path }}"
+    insertafter: EOF
+    state: present
+
+- name: Append /usr/bin/nextflow to secure_path in sudoers
+  lineinfile:
+    path: /etc/sudoers
+    insertafter: 'Defaults[[:space:]]+secure_path'
+    line: 'Defaults    secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/bin/nextflow"'
+
+- name: Install nf-core
+  pip:
+    name: nf-core
+    executable: pip3
+    state: present
+
+- name: Reload shell configuration
+  shell: "bash -l -c 'echo Reloaded .bashrc'"

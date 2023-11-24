@@ -1,0 +1,18 @@
+---
+- name: Update beegfs-helperd.conf file.
+  template:
+    src: beegfs-helperd.conf.j2
+    dest: "{{ beegfs_helperd_path }}"
+  notify: beegfs-helperd
+
+- name: Update beegfs-storage.conf file.
+  template:
+    src: beegfs-storage.conf.j2
+    dest: "{{ beegfs_storage_path }}"
+  notify: beegfs-storage
+
+- name: Update beegfs-client.conf file.
+  template:
+    src: beegfs-client.conf.j2
+    dest: "{{ beegfs_client_path }}"
+  notify: beegfs-client

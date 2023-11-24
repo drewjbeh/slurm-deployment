@@ -1,0 +1,11 @@
+---
+- name: Setup slurm controller.
+  hosts: slurm-controller
+  become: true
+  roles:
+    - munge
+    - node_exporter
+    - docker
+    - nextflow
+    - slurm-controller
+    - beegfs-server

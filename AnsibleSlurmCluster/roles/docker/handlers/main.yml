@@ -1,0 +1,7 @@
+---
+- name: munge
+  systemd:
+    name: munge
+    daemon_reload: true
+    state: restarted
+  become: true

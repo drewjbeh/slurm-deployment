@@ -1,0 +1,29 @@
+---
+- name: Check if munge key exists
+  uri:
+    url: "{{ vault_url }}/v1/{{ vault_base_path }}"
+    method: GET
+    headers: "{{ vault_headers }}"
+    body_format: json
+    status_code: [ 200, 204, 404 ]
+  register: get_munge_key
+
+- name: Create munge key
+  block:
+    - name: Create munge key
+      shell: "{{ create_munge_key_command }}"
+      register: munge_key
+
+    - name: Convert key to base64
+      set_fact:
+        munge_key_b64: "{{ munge_key.stdout | b64encode}} "
+
+    - name: Store munge key in vault
+      uri:
+        url: "{{ vault_url }}/v1/{{ vault_base_path }}"
+        method: POST
+        headers: "{{ vault_headers }}"
+        body_format: json
+        body: '{"data": {"{{ vault_munge_key }}": "{{ munge_key_b64 }}"}}'
+
+  when: get_munge_key.status == 404

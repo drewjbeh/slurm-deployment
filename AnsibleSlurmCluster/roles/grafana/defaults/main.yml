@@ -1,0 +1,10 @@
+---
+repo: "deb https://packages.grafana.com/oss/deb stable main"
+gpg_key: "https://packages.grafana.com/gpg.key"
+
+port: 3000
+
+data_source: "http://localhost:3000/api/datasources"
+
+prometheus_url: "http://[2001:7c0:801:281:f816:3eff:feb7:dda0]:9090"
+users_url: "http://localhost:3000/api/admin/users"

@@ -1,0 +1,32 @@
+- name: Create download directory
+  become_user: ubuntu
+  file:
+    path: "{{ singularity_download_path }}"
+    state: directory
+    recurse: true
+
+- name: Download source from github
+  get_url:
+    url: "{{ singularity_url }}"
+    dest: "{{ singularity_download_path }}"
+
+- name: tar file
+  command: "chdir={{ singularity_download_path }} tar -xzf singularity-ce-{{ singularity_version }}.tar.gz"
+
+- name: Run configuration
+  shell: "cd {{ singularity_folder_path }} &&  ./mconfig"
+  become: true
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"
+
+- name: Build singularity
+  shell: "cd {{ singularity_folder_path }} && make -C builddir"
+  become: true
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"
+
+- name: Install singularity
+  become: true
+  shell: "cd {{ singularity_folder_path }} && sudo make -C builddir install"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"

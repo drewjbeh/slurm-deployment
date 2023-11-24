@@ -1,0 +1,6 @@
+---
+- include_tasks: generate_secret_locally.yml
+#- include_tasks: generate_secret.yml
+#  when: not generate_locally
+#- include_tasks: generate_secret_locally.yml
+#  when: generate_locally

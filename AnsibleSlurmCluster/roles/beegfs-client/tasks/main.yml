@@ -1,0 +1,4 @@
+---
+- include_tasks: install.yml
+- include_tasks: get_connauthfile.yml
+- include_tasks: config_files.yml

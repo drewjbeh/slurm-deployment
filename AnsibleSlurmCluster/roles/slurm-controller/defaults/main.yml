@@ -1,0 +1,19 @@
+---
+#TODO get password from vault
+mysql_root_password: ""
+
+maria_db:
+  - mariadb-server
+  - mariadb-client
+
+
+slurm:
+  - slurm-wlm
+  - slurm-wlm-doc
+  - slurm-wlm-basic-plugins
+  - slurm-wlm-torque
+  - slurmdbd
+
+
+volume_path: "/dev/vdb"
+volume_mount_point: "/mnt/ceph"

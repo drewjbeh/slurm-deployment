@@ -1,0 +1,43 @@
+---
+
+should_install: ""
+
+prometheus_version: 2.45.0
+
+usr_path: "/usr/local/bin"
+etc_path: "/etc/prometheus"
+
+prometheus_directories:
+  - "{{ etc_path }}"
+  - "/var/lib/prometheus"
+
+prometheus_repository: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+
+prometheus_move_to_usr:
+  - "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/prometheus"
+  - "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/promtool"
+
+prometheus_move_to_etc:
+  - "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/consoles"
+  - "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/console_libraries"
+  - "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/prometheus.yml"
+
+prometheus_move:
+  - from: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/prometheus"
+    to: "{{ usr_path }}"
+  - from: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/promtool"
+    to: "{{ usr_path }}"
+  - from: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/consoles"
+    to: "{{ etc_path }}"
+  - from: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/console_libraries"
+    to: "{{ etc_path }}"
+  - from: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/prometheus.yml"
+    to: "{{ etc_path }}"
+
+change_ownership:
+  - "/usr/loca/bin/prometheus"
+  - "/usr/loca/bin/promtool"
+  - "/etc/prometheus"
+  - "/var/lib/prometheus"
+
+prometheus_service_path: "/etc/systemd/system/prometheus.service"

@@ -1,0 +1,6 @@
+---
+- name: Setup singularity on SLURM VMs
+  hosts: slurm-controller:slurm-compute
+  become: true
+  roles:
+    - singularity_build

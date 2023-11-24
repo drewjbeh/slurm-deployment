@@ -1,0 +1,5 @@
+---
+- copy:
+    src: '/home/ubuntu/connauthfile'
+    dest: '/etc/beegfs/connauthfile'
+

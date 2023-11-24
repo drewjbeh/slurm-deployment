@@ -1,0 +1,20 @@
+---
+- name: Download tar file
+  get_url:
+    url: "{{ go_url }}"
+    dest: "{{ home_directory }}"
+
+- name: Tar go file
+  command: "sudo tar -C /usr/local -xzvf {{ home_directory }}/go{{ go_version }}.{{ go_os }}-{{ go_arch }}.tar.gz"
+
+- name: Remove go tar file
+  file:
+    path: "go{{ go_version }}.{{ go_os }}-{{ go_arch }}.tar.gz"
+    state: absent
+
+- name: Add `go` to PATH
+  lineinfile:
+    path: /home/ubuntu/.bashrc
+    line: "export PATH={{ go_path }}"
+    insertafter: EOF
+    state: present

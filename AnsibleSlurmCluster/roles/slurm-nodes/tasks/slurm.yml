@@ -1,0 +1,55 @@
+---
+- name: Create the slurm group
+  become: true
+  group:
+    name: slurm
+    gid: 967
+
+- name: Install Slurm packages.
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ slurm }}"
+
+- name: Create the slurm user
+  become: true
+  user:
+    name: slurm
+    comment: "SLURM workload manager"
+    uid: 967
+    group: slurm
+    home: /var/lib/slurm
+    shell: /bin/bash
+    createhome: yes
+
+- name: Upload cgroup.conf file.
+  template:
+    src: templates/cgroup.conf
+    dest: /etc/slurm/cgroup.conf
+
+- name: Upload slurm.conf file.
+  template:
+    src: slurm.conf.j2
+    dest: /etc/slurm/slurm.conf
+
+- name: Create slurm directories.
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: slurm
+    group: slurm
+  loop: "{{ create_slurm_directories }}"
+
+- name: Set permissions for /var/spool/slurm directory
+  become: true
+  file:
+    path: /var/spool/slurm
+    mode: 0755
+  notify: slurmd
+
+- name: Restart slurmd service.
+  systemd:
+    name: slurmd
+    state: restarted
+    enabled: yes
+

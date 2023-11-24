@@ -1,0 +1,6 @@
+---
+miniconda_directory: "~/miniconda3"
+miniconda_url: "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+miniconda_sh_destination: "~/miniconda3/miniconda.sh"
+miniconda_bin: "~/miniconda3/bin/conda"
+

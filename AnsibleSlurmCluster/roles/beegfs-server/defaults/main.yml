@@ -1,0 +1,15 @@
+---
+vault_base_path: "secrets/data/beegfs"
+vault_connauthfile_key: "connauthfile-b64"
+
+beegfs_version: "7.4.1"
+beegfs_gpg_key: "https://www.beegfs.io/release/beegfs_{{ beegfs_version }}/gpg/GPG-KEY-beegfs"
+beegfs_repository: "deb https://www.beegfs.io/release/beegfs_{{ beegfs_version }} jammy non-free"
+beegfs_repo_filename: "beegfs.list"
+
+beegfs_server_packages:
+  - beegfs-mgmtd
+  - beegfs-meta
+  - beeond
+
+...

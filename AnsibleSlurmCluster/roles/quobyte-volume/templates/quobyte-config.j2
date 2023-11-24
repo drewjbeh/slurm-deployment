@@ -1,0 +1,14 @@
+registry=192.168.10.253:7861,192.168.10.252:7861,192.168.10.251:7861,192.168.10.250:7861
+volume_name={{ volume_name }}
+mount_point=/mnt/quobyte
+<ca>
+{{ vault_ca }}
+</ca>
+
+<cert>
+{{ vault_public_cert }}
+</cert>
+
+<key>
+{{ vault_private_cert }}
+</key>

@@ -1,0 +1,38 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ required_packages }}"
+
+- name: Add Docker GPG key
+  apt_key:
+    url: "{{ gpg_key }}"
+    state: present
+
+- name: Add Docker APT repository
+  apt_repository:
+    repo: "{{ repository }}"
+    state: present
+
+- name: Install Docker CE
+  apt:
+    name: "{{ docker_package }}"
+    state: present
+
+- name: Create docker group
+  group:
+    name: docker
+    state: present
+
+- name: Add user to docker group
+  user:
+    name: ubuntu
+    group: docker
+
+- name: Start and enable Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+

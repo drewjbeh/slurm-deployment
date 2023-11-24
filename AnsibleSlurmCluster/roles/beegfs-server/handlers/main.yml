@@ -1,0 +1,14 @@
+---
+- name: beegfs-mgmtd
+  systemd:
+    name: beegfs-mgmtd
+    daemon-reload: true
+    state: restarted
+
+- name: beegfs-meta
+  systemd:
+    name: beegfs-meta
+    daemon-reload: true
+    state: restarted
+
+...

@@ -1,0 +1,27 @@
+---
+vault_slurm_base_path: "secrets/data/slurm"
+vault_munge_key: "munge-key-b64"
+
+munge:
+  - libmunge2
+  - libmunge-dev
+  - munge
+
+slurm:
+  - slurm-wlm
+  - slurm-wlm-doc
+  - slurm-wlm-basic-plugins
+  - slurm-wlm-torque
+
+create_slurm_directories:
+  - /run/slurm
+  - /var/spool/slurm/d
+
+change_directory_ownership:
+  - /var/log/slurm
+  - /etc/slurm
+  - /run/slurm
+  - /var/spool/slurm
+
+
+#32118 for 32GB

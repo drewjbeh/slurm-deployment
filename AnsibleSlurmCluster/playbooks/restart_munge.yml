@@ -1,0 +1,10 @@
+---
+- name: Restart munge on compute nodes
+  hosts: slurm-compute
+  become: true
+  tasks:
+    - name: Restart munge
+      systemd:
+        name: munge
+        daemon_reload: true
+        state: restarted

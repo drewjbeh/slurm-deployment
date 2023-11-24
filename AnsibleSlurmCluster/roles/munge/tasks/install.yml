@@ -1,0 +1,6 @@
+---
+- name: Install Munge.
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ munge }}"

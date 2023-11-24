@@ -1,0 +1,11 @@
+---
+- name: Setup slurm compute nodes.
+  hosts: slurm-compute
+  become: true
+  roles:
+    - munge
+    - node_exporter
+    - docker
+    - nextflow
+    - slurm-nodes
+    - beegfs-client

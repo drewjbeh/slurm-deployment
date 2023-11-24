@@ -1,0 +1,5 @@
+---
+packages_to_install:
+  - zip
+  - python3-pip
+  - virtualenv

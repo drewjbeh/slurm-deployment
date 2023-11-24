@@ -1,0 +1,16 @@
+---
+
+- include_tasks: prepare.yaml
+
+- include_tasks: download.yaml
+  when:
+    - should_download
+
+- include_tasks: install.yaml
+  when:
+    - should_download
+
+- include_tasks: configure.yaml
+- include_tasks: execute.yaml
+
+...

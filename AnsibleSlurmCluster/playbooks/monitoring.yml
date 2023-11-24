@@ -1,0 +1,16 @@
+---
+- name: Setup prometheus server.
+  hosts: prometheus-server
+  become: true
+  roles:
+    - common
+    - node_exporter
+    - prometheus-server
+
+- name: Setup grafana server
+  hosts: grafana
+  become: true
+  roles:
+    - common
+    - node_exporter
+    - grafana

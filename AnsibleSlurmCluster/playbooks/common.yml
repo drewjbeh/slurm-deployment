@@ -1,0 +1,23 @@
+---
+- name: Generate required secrets.
+  hosts: localhost
+  become: true
+  roles:
+    - role: generate_random_secret
+      vars:
+        - secret_path: "slurm/munge"
+        - vault_secret_key: "munge"
+        - bs: 1024
+        - count: 1
+    - role: generate_random_secret
+      vars:
+        - secret_path: "beegfs"
+        - vault_secret_key: "connauthfile"
+        - bs: 128
+        - count: 1
+
+- name: Run `common` on slurm VMs
+  hosts: slurm-controller:slurm-compute
+  become: true
+  roles:
+    - common

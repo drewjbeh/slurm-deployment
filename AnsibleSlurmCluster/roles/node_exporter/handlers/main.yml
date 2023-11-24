@@ -1,0 +1,12 @@
+---
+
+- name: systemctl daemon-reload
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: restart_prometheus_node_exporter
+  ansible.builtin.service:
+    name: prometheus-node-exporter
+    state: restarted
+
+...

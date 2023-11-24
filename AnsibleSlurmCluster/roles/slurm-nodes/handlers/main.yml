@@ -1,0 +1,7 @@
+---
+- name: slurmd
+  systemd:
+    name: slurmd
+    daemon-reload: true
+    state: restarted
+  become: true

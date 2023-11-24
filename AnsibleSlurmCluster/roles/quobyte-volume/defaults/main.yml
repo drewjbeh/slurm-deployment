@@ -1,0 +1,17 @@
+---
+repo: "deb https://support.quobyte.com/repo/current/apt/ jammy main"
+repo_filename: "quobyte.list"
+
+package_key: "https://packages.quobyte.com/repo/3/fwQuMVmEUqyUbGpMvMYcTZZjqbhyER5Z/apt/pubkey.gpg"
+
+mount_path: "/mnt/quobyte"
+# should override when using the role
+volume_name: "c62c9e2a-cd5f-42e5-bbc0-037eaa1f45ce"
+
+vault_quobyte_base_path: "secrets/data/quobyte"
+
+vault_ca: "{{ lookup('hashi_vault', 'secret={{ vault_quobyte_base_path }}:trusted-ca token={{ vault_token }} url={{ vault_url }}') }}"
+vault_public_cert: "{{ lookup('hashi_vault', 'secret={{ vault_quobyte_base_path }}:public-cert token={{ vault_token }} url={{ vault_url }}') }}"
+vault_private_cert: "{{ lookup('hashi_vault', 'secret={{ vault_quobyte_base_path }}:private-cert token={{ vault_token }} url={{ vault_url }}') }}"
+
+...

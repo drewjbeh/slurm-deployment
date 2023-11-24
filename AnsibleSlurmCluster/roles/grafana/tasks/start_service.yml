@@ -1,0 +1,15 @@
+---
+- name: Start and Enable Grafana Service
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Wait for Grafana to Start
+  wait_for:
+    host: localhost
+    port: "{{ port }}"
+    delay: 5
+    timeout: 60
+    state: started
+
