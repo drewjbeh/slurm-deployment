@@ -6,11 +6,11 @@ output "compute_ip" {
 }
 
 output "controller_ip" {
-  value = join(", ", [openstack_compute_instance_v2.terraform-slurm-controller.name, openstack_compute_instance_v2.terraform-slurm-controller.network.1.fixed_ip_v4])
+  value = join(", ", [openstack_compute_instance_v2.terraform-slurm-controller.name, openstack_compute_instance_v2.terraform-slurm-controller.network.1.fixed_ip_v4, openstack_compute_instance_v2.prometheus-server.network.0.fixed_ip_v6])
 }
 
 output "prometheus_ip" {
-  value = join(", ", [openstack_compute_instance_v2.prometheus-server.name, openstack_compute_instance_v2.prometheus-server.network.1.fixed_ip_v4, openstack_compute_instance_v2.prometheus-server.network.fixed_ip_v6])
+  value = join(", ", [openstack_compute_instance_v2.prometheus-server.name, openstack_compute_instance_v2.prometheus-server.network.1.fixed_ip_v4, openstack_compute_instance_v2.prometheus-server.network.0.fixed_ip_v6])
 }
 
 output "grafana_ip" {
