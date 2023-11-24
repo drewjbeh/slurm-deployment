@@ -33,11 +33,6 @@ variable "volume_size" {
   description = "Size of the volume in GB"
 }
 
-variable "jumphost_key_pair" {
-  type = string
-  default = "jumphost"
-}
-
 variable "external_network" {
   type = string
   description = "ID of the external network to be assigned/attached on the VMs."
