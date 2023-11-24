@@ -14,5 +14,5 @@ output "prometheus" {
 }
 
 output "grafana" {
-  value = [join(", ", [openstack_compute_instance_v2.grafana.name, openstack_compute_instance_v2.grafana.access_ip_v6])]
+  value = [join(", ", [openstack_compute_instance_v2.grafana.name, openstack_compute_instance_v2.grafana.network.1.fixed_ip_v4, openstack_compute_instance_v2.grafana.access_ip_v6])]
 }
