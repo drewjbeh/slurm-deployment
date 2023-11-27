@@ -51,7 +51,6 @@ for key, value in values.items():
             file.write(f"---\n{ansible_host}\n{ansible_hostname}\n{ansible_host_v4}")
         if "prometheus" in item:
             prometheus_url = f"http://{ipv6.strip()}:{prometheus_port}"
-            controller_ipv4 = ipv4.strip()
         if "controller" in item:
             controller_ipv4 = ipv4.strip()
 
