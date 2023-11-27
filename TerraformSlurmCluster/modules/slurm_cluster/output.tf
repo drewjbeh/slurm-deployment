@@ -6,7 +6,7 @@ output "slurm-compute" {
 }
 
 output "slurm-controller" {
-  value = [join(", ", [openstack_compute_instance_v2.terraform-slurm-controller.name, openstack_compute_instance_v2.terraform-slurm-controller.network.1.fixed_ip_v4, openstack_compute_instance_v2.prometheus-server.network.0.fixed_ip_v6])]
+  value = [join(", ", [openstack_compute_instance_v2.terraform-slurm-controller.name, openstack_compute_instance_v2.terraform-slurm-controller.network.1.fixed_ip_v4, openstack_compute_instance_v2.terraform-slurm-controller.network.0.fixed_ip_v6])]
 }
 
 output "prometheus" {
