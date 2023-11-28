@@ -40,7 +40,7 @@
 
 - name: Upload cgroup.conf file.
   template:
-    src: templates/cgroup.conf
+    src: "{{ cgroup_conf }}"
     dest: /etc/slurm/cgroup.conf
 
 - name: Upload slurmdbd.conf file.
@@ -50,7 +50,7 @@
 
 - name: Upload slurm.conf file.
   template:
-    src: slurm.conf.j2
+    src: "{{ slurm_conf }}"
     dest: /etc/slurm/slurm.conf
 
 - name: Change file ownership and group for /etc/slurm/slurm.conf
