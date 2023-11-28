@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 
 import yaml
 
@@ -54,10 +55,18 @@ for key, value in values.items():
         if "controller" in item:
             controller_ipv4 = ipv4.strip()
 
+# add slurm-cluster group to include all compute and controller nodes
+hosts["all"]["children"]["slurm-cluster"] = {"hosts": {}}
+for compute in hosts["all"]["children"]["slurm-compute"]["hosts"]:
+    hosts["all"]["children"]["slurm-cluster"]["hosts"][compute] = ""
+for controller in hosts["all"]["children"]["slurm-controller"]["hosts"]:
+    hosts["all"]["children"]["slurm-cluster"]["hosts"][controller] = ""
+
 group_vars_dir = f"inventory{os.sep}group_vars"
 os.makedirs(group_vars_dir)
 os.makedirs(f"{group_vars_dir}{os.sep}all")
 os.makedirs(f"{group_vars_dir}{os.sep}slurm-compute")
+os.makedirs(f"{group_vars_dir}{os.sep}slurm-cluster")
 
 all_content = f"""---
 ansible_python_interpreter: {python_interpreter}
@@ -75,6 +84,9 @@ sockets_per_board: {slurm_compute_sockets}
 threads_per_core: {slurm_compute_threads}
 real_memory: {slurm_real_memory}
 """
+
+shutil.copy("confs/cgroup.conf", "inventory/group_vars/slurm-cluster")
+shutil.copy("confs/slurm.conf.j2", "inventory/group_vars/slurm-cluster")
 
 with open(f"inventory{os.sep}hosts.yml", "w") as file:
     yaml.safe_dump(hosts, file, default_style=None)
