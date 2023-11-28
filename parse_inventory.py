@@ -85,6 +85,11 @@ threads_per_core: {slurm_compute_threads}
 real_memory: {slurm_real_memory}
 """
 
+slurm_cluster_content = f"""---
+cgroup_conf: "{{ ansible_inventory_sources | first }}/group_vars/slurm-cluster/cgroup.conf"
+slurm_conf: "{{ ansible_inventory_sources | first }}/group_vars/slurm-cluster/slurm.conf.j2"
+"""
+
 shutil.copy("confs/cgroup.conf", "inventory/group_vars/slurm-cluster")
 shutil.copy("confs/slurm.conf.j2", "inventory/group_vars/slurm-cluster")
 
@@ -96,3 +101,6 @@ with open(f"{group_vars_dir}{os.sep}all{os.sep}all.yml", "w") as f:
 
 with open(f"{group_vars_dir}{os.sep}slurm-compute{os.sep}slurm-compute.yml", "w") as f:
     f.write(slurm_compute_content)
+
+with open(f"{group_vars_dir}{os.sep}slurm-cluster{os.sep}slurm-cluster.yml", "w") as f:
+    f.write(slurm_cluster_content)
