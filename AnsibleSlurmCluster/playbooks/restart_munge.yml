@@ -1,6 +1,6 @@
 ---
 - name: Restart munge on compute nodes
-  hosts: slurm-compute
+  hosts: slurm-cluster
   become: true
   tasks:
     - name: Restart munge
