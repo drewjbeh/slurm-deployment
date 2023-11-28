@@ -1,6 +1,6 @@
 ---
 - name: Setup nextflow on SLURM vms
-  hosts: slurm-controller:slurm-compute
+  hosts: slurm-cluster
   become: true
   roles:
     - nextflow

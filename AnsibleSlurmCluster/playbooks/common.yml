@@ -17,7 +17,7 @@
         - count: 1
 
 - name: Run `common` on slurm VMs
-  hosts: slurm-controller:slurm-compute
+  hosts: slurm-cluster
   become: true
   roles:
     - common
