@@ -2,11 +2,6 @@
 vault_slurm_base_path: "secrets/data/slurm"
 vault_munge_key: "munge-key-b64"
 
-munge:
-  - libmunge2
-  - libmunge-dev
-  - munge
-
 slurm:
   - slurm-wlm
   - slurm-wlm-doc
