@@ -48,11 +48,6 @@ variable "ipv6_external_network" {
   default = "1f4c65ef-dd53-4d85-b2d0-1fd1a178522c"
 }
 
-variable "quobyte_network" {
-  type = string
-  default = "1a6b0612-ce39-4fa1-b24b-620ccee3c103"
-}
-
 variable "slurm_subnet_cidr" {
   type = string
   default = "192.168.155.0/24"

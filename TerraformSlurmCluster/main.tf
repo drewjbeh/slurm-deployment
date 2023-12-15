@@ -14,6 +14,5 @@ module "slurm_cluster" {
   volume_type = var.volume_type
 
   external_network = var.ipv6_external_network
-  quobyte_network = var.quobyte_network
   slurm_subnet_cidr = var.slurm_subnet_cidr
 }
