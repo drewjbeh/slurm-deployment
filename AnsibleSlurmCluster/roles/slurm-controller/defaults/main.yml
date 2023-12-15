@@ -14,6 +14,11 @@ slurm:
   - slurm-wlm-torque
   - slurmdbd
 
+nfs:
+  - nfs-ganesha
+  - nfs-ganesha-vfs
 
+# can be overwritten when running the role, set to quobyte, ibm etc.
+volume_type: "ceph"
 volume_path: "/dev/vdb"
-volume_mount_point: "/mnt/ceph"
+volume_mount_point: "/mnt/{{ volume_type }}"

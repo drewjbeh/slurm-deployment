@@ -1,0 +1,22 @@
+---
+- name: Install nfs packages.
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ nfs }}"
+
+- name: Upload nfs-ganesha.conf file
+  template:
+    src: ganesha.conf.j2
+    dest: /etc/ganesha/ganesha.conf
+
+- name: Create mount point directory
+  file:
+    path: /mnt/ceph
+    state: directory
+
+- name: Start nfs-ganesha service.
+  systemd:
+    name: nfs-ganesha
+    state: restarted
+    enabled: yes

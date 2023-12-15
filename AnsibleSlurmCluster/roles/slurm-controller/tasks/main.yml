@@ -2,3 +2,4 @@
 - include_tasks: sql_database.yml
 - include_tasks: controller.yml
 - include_tasks: mount_volume.yml
+- include_tasks: nfs-ganesha.yml
