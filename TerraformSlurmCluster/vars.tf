@@ -18,13 +18,15 @@ variable "ubuntu_generic_image_id" {
   default = "760212aa-71c9-4d78-abd9-d71c6777700d"
 }
 
-variable "mini_flavor_id" {
+variable "default_flavor_id" {
   type = string
+  description = "Default flavor to be used for non-slurm VMs"
   default = "0081036a-c935-4810-8044-d68b87f299db"
 }
 
 variable "slurm_flavor_id" {
   type = string
+  description = "The flavor to be used for the slurm controller and compute nodes."
   default = "8503f7d9-7307-4429-9576-d3e58ca16024"
 }
 
@@ -43,7 +45,7 @@ variable "volume_type" {
   default = "ceph"
 }
 
-variable "ipv6_external_network" {
+variable "external_network" {
   type = string
   default = "1f4c65ef-dd53-4d85-b2d0-1fd1a178522c"
 }
