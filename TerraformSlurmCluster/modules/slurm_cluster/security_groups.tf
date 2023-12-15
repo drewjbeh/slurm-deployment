@@ -317,3 +317,18 @@ resource "openstack_networking_secgroup_rule_v2" "beegfs_helperd_ipv4_rule" {
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_networking_secgroup_v2.beegfs.id
 }
+
+resource "openstack_networking_secgroup_v2" "nfs_ganesha" {
+  name        = "nfs-ganesha"
+  description = ""
+}
+
+resource "openstack_networking_secgroup_rule_v2" "nfs_ganehsa_ipv4_rule" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 2049
+  port_range_max    = 2049
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.beegfs.id
+}
