@@ -1,3 +1,8 @@
+variable "region" {
+  type = string
+  default = "RegionTwo"
+}
+
 variable "key_pair" {
   type    = string
   default = "slurm"

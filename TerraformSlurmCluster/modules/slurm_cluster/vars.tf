@@ -1,3 +1,8 @@
+variable "region" {
+  type = string
+  description = "The region where the module is created/running in."
+}
+
 variable "os_image_id" {
   type = string
   description = "Operating system to use for the VMs."

@@ -1,6 +1,8 @@
 module "slurm_cluster" {
   source = "./modules/slurm_cluster"
 
+  region                  = var.region
+
   key_pair                = var.key_pair
   compute_instances_count = var.compute_instances_count
 
