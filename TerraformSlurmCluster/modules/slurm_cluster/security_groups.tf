@@ -70,52 +70,6 @@ resource "openstack_networking_secgroup_rule_v2" "grafana_ipv6_ingress_rule" {
   security_group_id = openstack_networking_secgroup_v2.grafana.id
 }
 
-# nginx
-resource "openstack_networking_secgroup_v2" "nginx" {
-  name        = "nginx"
-  description = "Open ports 80 (HTTP) and 443 (HTTPS)"
-}
-
-resource "openstack_networking_secgroup_rule_v2" "nginx_ipv4_http_rule" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 80
-  port_range_max    = 80
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.nginx.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "nginx_ipv6_http_rule" {
-  direction         = "ingress"
-  ethertype         = "IPv6"
-  protocol          = "tcp"
-  port_range_min    = 80
-  port_range_max    = 80
-  remote_ip_prefix  = "::/0"
-  security_group_id = openstack_networking_secgroup_v2.nginx.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "nginx_ipv4_https_ingress_rule" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 443
-  port_range_max    = 443
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.nginx.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "nginx_ipv6_https_ingress_rule" {
-  direction         = "ingress"
-  ethertype         = "IPv6"
-  protocol          = "tcp"
-  port_range_min    = 443
-  port_range_max    = 443
-  remote_ip_prefix  = "::/0"
-  security_group_id = openstack_networking_secgroup_v2.nginx.id
-}
-
 resource "openstack_networking_secgroup_v2" "prometheus" {
   name = "prometheus"
   description = ""
@@ -236,31 +190,6 @@ resource "openstack_networking_secgroup_rule_v2" "slurm_master_slurmbd" {
   port_range_max    = 6819
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_networking_secgroup_v2.slurm_master.id
-}
-
-resource "openstack_networking_secgroup_v2" "vault" {
-  name        = "vault"
-  description = ""
-}
-
-resource "openstack_networking_secgroup_rule_v2" "vault_ipv4_rule" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 8200
-  port_range_max    = 8200
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.vault.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "vault_ipv6_rule" {
-  direction         = "ingress"
-  ethertype         = "IPv6"
-  protocol          = "tcp"
-  port_range_min    = 8200
-  port_range_max    = 8200
-  remote_ip_prefix  = "::/0"
-  security_group_id = openstack_networking_secgroup_v2.vault.id
 }
 
 resource "openstack_networking_secgroup_v2" "beegfs" {
