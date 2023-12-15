@@ -8,11 +8,6 @@ variable "key_pair" {
   default = "slurm"
 }
 
-variable "ubuntu_jammy_image_id" {
-  type = string
-  default = "de745356-afed-483b-8726-dc329390fd4d"
-}
-
 variable "ubuntu_generic_image_id" {
   type = string
   default = "760212aa-71c9-4d78-abd9-d71c6777700d"
