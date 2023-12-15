@@ -7,7 +7,8 @@ resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
     openstack_networking_secgroup_v2.external_access.name,
     openstack_networking_secgroup_v2.slurm_master.name,
     openstack_networking_secgroup_v2.prometheus_node_exporter.name,
-    openstack_networking_secgroup_v2.beegfs.name
+    openstack_networking_secgroup_v2.beegfs.name,
+    openstack_networking_secgroup_v2.nfs_ganesha.name
   ]
 
   network {
@@ -31,7 +32,8 @@ resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
     openstack_networking_secgroup_v2.external_access.name,
     openstack_networking_secgroup_v2.slurm_compute.name,
     openstack_networking_secgroup_v2.prometheus_node_exporter.name,
-    openstack_networking_secgroup_v2.beegfs.name
+    openstack_networking_secgroup_v2.beegfs.name,
+    openstack_networking_secgroup_v2.nfs_ganesha.name
   ]
 
   network {
