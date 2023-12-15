@@ -1,0 +1,14 @@
+EXPORT
+{
+  Export_Id = 1;
+  Path = {{ volume_mount_point }};
+  Pseudo = {{ volume_mount_point }};
+  Access_Type = RW;
+  Squash = None;
+  SecType = sys;
+  Protocols = 3,4;
+  FSAL
+  {
+    Name = VFS;
+  }
+}
