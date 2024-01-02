@@ -23,6 +23,11 @@ variable "key_pair" {
   description = "SSH key that will be used to login into the cluster."
 }
 
+variable "key_path" {
+  type = string
+  default = "/home/ubuntu/.ssh/slurm"
+}
+
 variable "compute_instances_count" {
   type = number
   description = "Number of SLURM compute instances to create."
