@@ -19,6 +19,14 @@ resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
     uuid = openstack_networking_network_v2.slurm_net.id
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "echo '127.0.0.1 slurm-controller' > /etc/hostname",
+      "hostnamectl set-hostname slurm-controller",
+      "systemctl restart systemd-hostnamed",
+    ]
+  }
+
   depends_on = [openstack_networking_subnet_v2.slurm_subnet]
 }
 
@@ -42,6 +50,14 @@ resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
 
   network {
     uuid = openstack_networking_network_v2.slurm_net.id
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo '127.0.0.1 slurm-compute-${count.index + 1}' > /etc/hostname",
+      "hostnamectl set-hostname slurm-compute-${count.index + 1}",
+      "systemctl restart systemd-hostnamed"
+    ]
   }
 
   depends_on = [openstack_networking_subnet_v2.slurm_subnet]
