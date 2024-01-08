@@ -1,36 +1,36 @@
 variable "key_pair" {
   type    = string
-  default = "slurm"
+  default = "Drew"
 }
 
 variable "ubuntu_jammy_image_id" {
   type = string
-  default = "de745356-afed-483b-8726-dc329390fd4d"
+  default = "b83723d6-13a0-4a9e-9e91-ca85ce10cfef"
 }
 
 variable "ubuntu_generic_image_id" {
   type = string
-  default = "760212aa-71c9-4d78-abd9-d71c6777700d"
+  default = "b83723d6-13a0-4a9e-9e91-ca85ce10cfef"
 }
 
 variable "mini_flavor_id" {
   type = string
-  default = "0081036a-c935-4810-8044-d68b87f299db"
+  default = "6c315b7a-86fc-4e53-987a-529769db992d"
 }
 
 variable "slurm_flavor_id" {
   type = string
-  default = "8503f7d9-7307-4429-9576-d3e58ca16024"
+  default = "6186e4c3-3f02-4ecf-bf68-2088ad10d11b"
 }
 
 variable "compute_instances_count" {
   type = number
-  default = 7
+  default = 1
 }
 
 variable "volume_size" {
   type = number
-  default = 1000
+  default = 100
 }
 
 variable "volume_type" {
@@ -40,7 +40,7 @@ variable "volume_type" {
 
 variable "ipv6_external_network" {
   type = string
-  default = "1f4c65ef-dd53-4d85-b2d0-1fd1a178522c"
+  default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c"
 }
 
 variable "quobyte_network" {

@@ -105,7 +105,7 @@ munge_command = get_ansible_command(munge, inventory_path)
 
 # wait for the VMs to be up and running
 print("Wait for VMs to be up and running...")
-time.sleep(30)
+time.sleep(120)
 
 ansible_start = time.time()
 

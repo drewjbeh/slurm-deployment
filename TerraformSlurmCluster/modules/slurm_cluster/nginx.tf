@@ -1,3 +1,11 @@
+resource "openstack_blockstorage_volume_v3" "nginx_bootable_volume" {
+  region      = "RegionOne"
+  name        = "nginx-bootable-volume"
+  size        = 20
+  volume_type = "ceph"
+  image_id    = var.os_image_id
+}
+
 resource "openstack_compute_instance_v2" "nginx" {
   name            = "nginx"
   image_id        = var.os_image_id
@@ -12,9 +20,16 @@ resource "openstack_compute_instance_v2" "nginx" {
    network {
     uuid  = var.external_network
   }
+   block_device {
+    uuid                  = openstack_blockstorage_volume_v3.nginx_bootable_volume.id
+    source_type           = "volume"
+    boot_index            = 0
+    destination_type      = "volume"
+    delete_on_termination = true
+  }
 
   network {
-    uuid  = openstack_networking_network_v2.slurm_net.id
+    uuid = openstack_networking_network_v2.slurm_net.id
   }
 
   depends_on = [openstack_networking_subnet_v2.slurm_subnet]

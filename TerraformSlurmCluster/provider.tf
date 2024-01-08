@@ -9,11 +9,11 @@ terraform {
 }
 
 provider "openstack" {
-  user_name                     = "USERNAME"
-  tenant_name                   = "TENANT"
-  application_credential_secret = "APPLICATION_CREDENTIAL_SECRET"
-  application_credential_id     = "APPLICATION_CREDENTIAL_ID"
-  auth_url                      = "AUTH_URL"
-  region                        = "REGION"
+  user_name                     = "di93mih"
+  tenant_name                   = "di93mih"
+  application_credential_secret = "04QZ8GfklRv6LwXlU4aChpCzwIFGIYuArC3NjZ16UQb9zp0Cmwbl5Jvl2uAWPBeirt04UN4gzeMKi6oNjM-YFQ"
+  application_credential_id     = "cd6d711729664b05a69c1f80fc5db973"
+  auth_url                      = "https://cc.lrz.de:5000"
+  region                        = "RegionOne"
   insecure                      = true
 }
