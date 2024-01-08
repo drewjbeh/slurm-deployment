@@ -25,6 +25,7 @@ variable "key_pair" {
 
 variable "key_path" {
   type = string
+  description = "The path for the ssh key on the deploying VM."
   default = "/home/ubuntu/.ssh/slurm"
 }
 
