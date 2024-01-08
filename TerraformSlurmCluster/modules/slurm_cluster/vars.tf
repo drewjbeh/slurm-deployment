@@ -18,6 +18,12 @@ variable "key_pair" {
   description = "SSH key that will be used to login into the cluster."
 }
 
+variable "key_path" {
+  type = string
+  description = "The path for the ssh key on the deploying VM."
+  default = "/home/ubuntu/.ssh/slurm"
+}
+
 variable "compute_instances_count" {
   type = number
   description = "Number of SLURM compute instances to create."
