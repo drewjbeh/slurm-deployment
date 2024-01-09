@@ -42,6 +42,14 @@ resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
     delete_on_termination = true
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "echo '127.0.0.1 slurm-controller' > /etc/hostname",
+      "hostnamectl set-hostname slurm-controller",
+      "systemctl restart systemd-hostnamed",
+    ]
+  }
+
   depends_on = [openstack_networking_subnet_v2.slurm_subnet]
 }
 
@@ -72,6 +80,15 @@ resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
     destination_type      = "volume"
     delete_on_termination = true
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo '127.0.0.1 slurm-compute-${count.index + 1}' > /etc/hostname",
+      "hostnamectl set-hostname slurm-compute-${count.index + 1}",
+      "systemctl restart systemd-hostnamed"
+    ]
+  }
+
 
   depends_on = [openstack_networking_subnet_v2.slurm_subnet, openstack_blockstorage_volume_v3.compute_bootable_volume]
 }
