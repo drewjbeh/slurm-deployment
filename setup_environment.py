@@ -104,8 +104,8 @@ build_singularity_command = get_ansible_command(build_singularity_path, inventor
 munge_command = get_ansible_command(munge, inventory_path)
 
 # wait for the VMs to be up and running
-print("Wait for VMs to be up and running...")
-time.sleep(120)
+#print("Wait for VMs to be up and running...")
+#time.sleep(120)
 
 ansible_start = time.time()
 
