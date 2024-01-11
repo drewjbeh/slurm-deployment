@@ -13,7 +13,7 @@ resource "openstack_compute_volume_attach_v2" "nfs-ceph-attach" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      host        = "${openstack_compute_instance_v2.terraform-slurm-controller.network.0.fixed_ip_v6}"
+      host        = "${openstack_compute_instance_v2.terraform-slurm-controller.access_ip_v4}"
       private_key = "${file(var.key_path)}"
     }
     inline = [
