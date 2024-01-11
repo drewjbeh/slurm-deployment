@@ -43,10 +43,14 @@ resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
   }
 
   provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.key_path)
+      host        = openstack_compute_instance_v2.terraform-slurm-controller.access_ip_v4
+  }
     inline = [
-      "echo '127.0.0.1 slurm-controller' > /etc/hostname",
-      "hostnamectl set-hostname slurm-controller",
-      "systemctl restart systemd-hostnamed",
+      "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
     ]
   }
 
@@ -80,15 +84,18 @@ resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
     destination_type      = "volume"
     delete_on_termination = true
   }
-
+  
   provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.key_path)
+      host        = openstack_compute_instance_v2.terraform-slurm-compute[count.index].access_ip_v4
+  }
     inline = [
-      "echo '127.0.0.1 slurm-compute-${count.index + 1}' > /etc/hostname",
-      "hostnamectl set-hostname slurm-compute-${count.index + 1}",
-      "systemctl restart systemd-hostnamed"
+      "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
     ]
   }
-
 
   depends_on = [openstack_networking_subnet_v2.slurm_subnet, openstack_blockstorage_volume_v3.compute_bootable_volume]
 }

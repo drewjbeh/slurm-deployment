@@ -37,7 +37,19 @@ resource "openstack_compute_instance_v2" "prometheus-server" {
         destination_type      = "volume"
         delete_on_termination = true
       }
- }
+  
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.key_path)
+      host        = openstack_compute_instance_v2.prometheus-server.access_ip_v4
+    }
+    inline = [
+      "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
+    ]
+  }
+}
 
 resource "openstack_blockstorage_volume_v3" "grafana_bootable_volume" {
   region      = "RegionOne"
@@ -79,5 +91,16 @@ resource "openstack_compute_instance_v2" "grafana" {
         destination_type      = "volume"
         delete_on_termination = true
       }
-    }
 
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.key_path)
+      host        = openstack_compute_instance_v2.grafana.access_ip_v4
+  }
+    inline = [
+      "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
+    ]
+  }
+}
