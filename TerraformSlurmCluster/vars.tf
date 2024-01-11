@@ -1,6 +1,6 @@
 variable "key_pair" {
   type    = string
-  default = "Drew"
+  default = "slurm"
 }
 
 variable "ubuntu_jammy_image_id" {
