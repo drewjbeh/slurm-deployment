@@ -1,3 +1,20 @@
+resource "openstack_blockstorage_volume_v3" "compute_bootable_volume" {
+  region      = var.region
+  name        = "slurm-compute-bootable-volume-${count.index + 1}"
+  size        = 20
+  volume_type = var.volume_type
+  image_id    = var.os_image_id
+  count       = var.compute_instances_count
+}
+
+resource "openstack_blockstorage_volume_v3" "controller_bootable_volume" {
+  region      = var.region
+  name        = "slurm-controller-bootable-volume"
+  size        = 20
+  volume_type = var.volume_type
+  image_id    = var.os_image_id
+}
+
 resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
   name            = "slurm-controller"
   image_id        = var.os_image_id
