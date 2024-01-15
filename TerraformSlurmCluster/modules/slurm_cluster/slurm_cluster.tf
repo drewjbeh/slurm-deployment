@@ -37,6 +37,12 @@ resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
   }
 
   provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      host        = openstack_compute_instance_v2.terraform-slurm-controller.network[0].fixed_ip_v6
+      private_key = file(var.key_path)
+    }
     inline = [
       "echo '127.0.0.1 slurm-controller' > /etc/hostname",
       "hostnamectl set-hostname slurm-controller",
@@ -44,7 +50,17 @@ resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
     ]
   }
 
-  depends_on = [openstack_networking_subnet_v2.slurm_subnet]
+  block_device {
+    uuid                  = openstack_blockstorage_volume_v3.controller_bootable_volume.id
+    source_type           = "volume"
+    boot_index            = 0
+    destination_type      = "volume"
+    delete_on_termination = true
+  }
+
+  depends_on = [
+    openstack_networking_subnet_v2.slurm_subnet, openstack_blockstorage_volume_v3.controller_bootable_volume
+  ]
 }
 
 resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
@@ -70,6 +86,12 @@ resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
   }
 
   provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      host        = openstack_compute_instance_v2.terraform-slurm-compute[count.index].network[0].fixed_ip_v6
+      private_key = file(var.key_path)
+    }
     inline = [
       "echo '127.0.0.1 slurm-compute-${count.index + 1}' > /etc/hostname",
       "hostnamectl set-hostname slurm-compute-${count.index + 1}",
@@ -77,5 +99,13 @@ resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
     ]
   }
 
-  depends_on = [openstack_networking_subnet_v2.slurm_subnet]
+  block_device {
+    uuid                  = openstack_blockstorage_volume_v3.compute_bootable_volume[count.index].id
+    source_type           = "volume"
+    boot_index            = 0
+    destination_type      = "volume"
+    delete_on_termination = true
+  }
+
+  depends_on = [openstack_networking_subnet_v2.slurm_subnet, openstack_blockstorage_volume_v3.compute_bootable_volume]
 }
