@@ -15,17 +15,17 @@ variable "ubuntu_generic_image_id" {
 
 variable "mini_flavor_id" {
   type = string
-  default = "6c315b7a-86fc-4e53-987a-529769db992d"
+  default = "736b1189-1daf-46f1-ac2c-a9661f6f2b29"
 }
 
 variable "slurm_flavor_id" {
   type = string
-  default = "6186e4c3-3f02-4ecf-bf68-2088ad10d11b"
+  default = "a696ef69-3493-4dcd-b573-75cdf58fa087"
 }
 
 variable "compute_instances_count" {
   type = number
-  default = 1
+  default = 2
 }
 
 variable "volume_size" {
@@ -40,7 +40,8 @@ variable "volume_type" {
 
 variable "ipv6_external_network" {
   type = string
-  default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c"
+  #default = "8f5b0e5e-e3bf-4b53-b680-30bc593213eb" # ID for internet network
+  default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c" # ID for MWN network
 }
 
 variable "quobyte_network" {
