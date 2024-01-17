@@ -43,7 +43,7 @@ resource "openstack_compute_instance_v2" "prometheus-server" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = file(var.key_path)
-      host        = openstack_compute_instance_v2.prometheus-server.access_ip_v4
+      host        = "${self.access_ip_v4}"
     }
     inline = [
       "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
@@ -97,7 +97,7 @@ resource "openstack_compute_instance_v2" "grafana" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = file(var.key_path)
-      host        = openstack_compute_instance_v2.grafana.access_ip_v4
+      host        = "${self.access_ip_v4}"
   }
     inline = [
       "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
