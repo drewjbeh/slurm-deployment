@@ -95,6 +95,7 @@ compute_nodes_path = f"{playbooks_directory}/compute_nodes.yml"
 controller_path = f"{playbooks_directory}/controller.yml"
 build_singularity_path = f"{playbooks_directory}/singularity.yml"
 munge = f"{playbooks_directory}/restart_munge.yml"
+hosts = f"{playbooks_directory}/update_hosts.yml"
 
 common_command = get_ansible_command(common_path, inventory_path)
 monitoring_command = get_ansible_command(monitoring_path, inventory_path)
@@ -102,6 +103,7 @@ compute_nodes_command = get_ansible_command(compute_nodes_path, inventory_path)
 controller_command = get_ansible_command(controller_path, inventory_path)
 build_singularity_command = get_ansible_command(build_singularity_path, inventory_path)
 munge_command = get_ansible_command(munge, inventory_path)
+hosts_command = get_ansible_command(hosts, inventory_path)
 
 # wait for the VMs to be up and running
 #print("Wait for VMs to be up and running...")
@@ -127,6 +129,8 @@ if common_return_code == 0:
         concurrent.futures.wait([monitoring_future, compute_nodes_future, controller_future],
                                 return_when=concurrent.futures.ALL_COMPLETED)
 
+    # sleep before running munge
+    time.sleep(10)
     print("Running restart_munge.yml playbook")
     munge_return_code = run_playbook(munge_command, ansible_working_directory, f"{ansible_logs_directory}/restart_munge.txt")
 
@@ -134,6 +138,13 @@ if common_return_code == 0:
         print("Munge playbook has finished successfully.")
     else:
         print("Munge playbook did not finish successfully.")
+
+    hosts_return_code = run_playbook(hosts_command, ansible_working_directory, f"{ansible_logs_directory}/update_hosts.txt")
+
+    if hosts_return_code == 0:
+        print("update_hosts playbook has finished successfully.")
+    else:
+        print("update_hosts playbook did not finish successfully.")
 else:
     print(f"common.yml didn't execute successfully, had a return code {common_return_code}")
 
