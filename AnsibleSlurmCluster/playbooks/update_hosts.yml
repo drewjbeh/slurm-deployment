@@ -1,0 +1,7 @@
+---
+- name: Update /etc/hosts on Cluster Nodes
+  hosts: all
+  gather_facts: yes
+  become: true
+  roles:
+    - update_hosts

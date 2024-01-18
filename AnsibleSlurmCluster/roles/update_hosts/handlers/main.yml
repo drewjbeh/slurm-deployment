@@ -1,0 +1,5 @@
+---
+- name: Reload hosts
+  ansible.builtin.systemd:
+    name: systemd-networkd
+    state: restarted
