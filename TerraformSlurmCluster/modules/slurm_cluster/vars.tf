@@ -1,3 +1,8 @@
+variable "region" {
+  type = string
+  description = "The region where the module is created/running in."
+}
+
 variable "os_image_id" {
   type = string
   description = "Operating system to use for the VMs."
@@ -42,11 +47,6 @@ variable "volume_size" {
 variable "external_network" {
   type = string
   description = "ID of the external network to be assigned/attached on the VMs."
-}
-
-variable "quobyte_network" {
-  type = string
-  description = "ID of the `quobyte` network in order to create a shared storage."
 }
 
 variable "slurm_subnet_cidr" {

@@ -9,7 +9,7 @@
   apt:
     name: "{{ item }}"
     state: present
-  loop: "{{ slurm }}"
+  loop: "{{ packages }}"
 
 - name: Create the slurm user
   become: true
