@@ -1,38 +1,36 @@
-variable "region" {
-  type = string
-  default = "RegionTwo"
-}
-
 variable "key_pair" {
   type    = string
   default = "slurm"
 }
 
-variable "ubuntu_generic_image_id" {
+variable "ubuntu_jammy_image_id" {
   type = string
-  default = "760212aa-71c9-4d78-abd9-d71c6777700d"
+  default = "b83723d6-13a0-4a9e-9e91-ca85ce10cfef"
 }
 
-variable "default_flavor_id" {
+variable "ubuntu_generic_image_id" {
   type = string
-  description = "Default flavor to be used for non-slurm VMs"
-  default = "0081036a-c935-4810-8044-d68b87f299db"
+  default = "b83723d6-13a0-4a9e-9e91-ca85ce10cfef"
+}
+
+variable "mini_flavor_id" {
+  type = string
+  default = "736b1189-1daf-46f1-ac2c-a9661f6f2b29"
 }
 
 variable "slurm_flavor_id" {
   type = string
-  description = "The flavor to be used for the slurm controller and compute nodes."
-  default = "8503f7d9-7307-4429-9576-d3e58ca16024"
+  default = "a696ef69-3493-4dcd-b573-75cdf58fa087"
 }
 
 variable "compute_instances_count" {
   type = number
-  default = 7
+  default = 2
 }
 
 variable "volume_size" {
   type = number
-  default = 1000
+  default = 100
 }
 
 variable "volume_type" {
@@ -40,9 +38,15 @@ variable "volume_type" {
   default = "ceph"
 }
 
-variable "external_network" {
+variable "ipv6_external_network" {
   type = string
-  default = "1f4c65ef-dd53-4d85-b2d0-1fd1a178522c"
+  #default = "8f5b0e5e-e3bf-4b53-b680-30bc593213eb" # ID for internet network
+  default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c" # ID for MWN network
+}
+
+variable "quobyte_network" {
+  type = string
+  default = "1a6b0612-ce39-4fa1-b24b-620ccee3c103"
 }
 
 variable "slurm_subnet_cidr" {

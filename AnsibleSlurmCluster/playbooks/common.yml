@@ -16,6 +16,8 @@
         - bs: 128
         - count: 1
 
+- import_playbook: get_resources.yml
+
 - name: Run `common` on slurm VMs
   hosts: slurm-cluster
   become: true

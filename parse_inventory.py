@@ -8,12 +8,6 @@ controller_ipv4 = ""
 prometheus_port = 9090
 prometheus_url = ""
 
-slurm_compute_cpus = 28
-slurm_compute_boards = 1
-slurm_compute_sockets = 28
-slurm_compute_threads = 1
-slurm_real_memory = 64313
-
 python_interpreter = "/usr/bin/python3"
 ssh_key_path = "~/.ssh/slurm"
 controller_name = "slurm-controller"
@@ -77,14 +71,6 @@ node_exporter_port: 9100
 prometheus_url: {prometheus_url}
 """
 
-slurm_compute_content = f"""---
-cpus: {slurm_compute_cpus}
-boards: {slurm_compute_boards}
-sockets_per_board: {slurm_compute_sockets}
-threads_per_core: {slurm_compute_threads}
-real_memory: {slurm_real_memory}
-"""
-
 slurm_cluster_content = f"""---
 cgroup_conf: "{{{{ ansible_inventory_sources | first }}}}/group_vars/slurm-cluster/cgroup.conf"
 slurm_conf: "{{{{ ansible_inventory_sources | first }}}}/group_vars/slurm-cluster/slurm.conf.j2"
@@ -92,15 +78,13 @@ slurm_conf: "{{{{ ansible_inventory_sources | first }}}}/group_vars/slurm-cluste
 
 shutil.copy("confs/cgroup.conf", "inventory/group_vars/slurm-cluster")
 shutil.copy("confs/slurm.conf.j2", "inventory/group_vars/slurm-cluster")
+shutil.copy("confs/slurm-compute.yml.j2", "inventory/group_vars/slurm-compute")
 
 with open(f"inventory{os.sep}hosts.yml", "w") as file:
     yaml.safe_dump(hosts, file, default_style=None)
 
 with open(f"{group_vars_dir}{os.sep}all{os.sep}all.yml", "w") as f:
     f.write(all_content)
-
-with open(f"{group_vars_dir}{os.sep}slurm-compute{os.sep}slurm-compute.yml", "w") as f:
-    f.write(slurm_compute_content)
 
 with open(f"{group_vars_dir}{os.sep}slurm-cluster{os.sep}slurm-cluster.yml", "w") as f:
     f.write(slurm_cluster_content)

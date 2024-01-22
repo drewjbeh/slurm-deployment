@@ -1,3 +1,11 @@
+resource "openstack_blockstorage_volume_v3" "prometheus_bootable_volume" {
+  region      = "RegionOne"
+  name        = "prometheus-compute-bootable-volume"
+  size        = 20
+  volume_type = "ceph"
+  image_id    = var.os_image_id
+}
+
 resource "openstack_compute_instance_v2" "prometheus-server" {
   name            = "prometheus-server"
   image_id        = var.os_image_id
@@ -17,7 +25,38 @@ resource "openstack_compute_instance_v2" "prometheus-server" {
     uuid  = openstack_networking_network_v2.slurm_net.id
   }
 
-  depends_on = [openstack_networking_subnet_v2.slurm_subnet]
+  depends_on = [
+    openstack_networking_subnet_v2.slurm_subnet,
+    openstack_blockstorage_volume_v3.prometheus_bootable_volume
+]
+
+  block_device {
+        uuid                  = openstack_blockstorage_volume_v3.prometheus_bootable_volume.id
+        source_type           = "volume"
+        boot_index            = 0
+        destination_type      = "volume"
+        delete_on_termination = true
+      }
+  
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.key_path)
+      host        = "${self.access_ip_v4}"
+    }
+    inline = [
+      "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
+    ]
+  }
+}
+
+resource "openstack_blockstorage_volume_v3" "grafana_bootable_volume" {
+  region      = "RegionOne"
+  name        = "prometheus-compute-bootable-volume"
+  size        = 20
+  volume_type = "ceph"
+  image_id    = var.os_image_id
 }
 
 resource "openstack_compute_instance_v2" "grafana" {
@@ -40,5 +79,28 @@ resource "openstack_compute_instance_v2" "grafana" {
     uuid  = openstack_networking_network_v2.slurm_net.id
   }
 
-  depends_on = [openstack_networking_subnet_v2.slurm_subnet]
+  depends_on = [
+    openstack_networking_subnet_v2.slurm_subnet,
+    openstack_blockstorage_volume_v3.grafana_bootable_volume
+]
+
+  block_device {
+        uuid                  = openstack_blockstorage_volume_v3.grafana_bootable_volume.id
+        source_type           = "volume"
+        boot_index            = 0
+        destination_type      = "volume"
+        delete_on_termination = true
+      }
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.key_path)
+      host        = "${self.access_ip_v4}"
+  }
+    inline = [
+      "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
+    ]
+  }
 }

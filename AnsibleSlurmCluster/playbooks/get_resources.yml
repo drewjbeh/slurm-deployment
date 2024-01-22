@@ -1,0 +1,22 @@
+---
+- name: Execute Commands and Render Jinja Template
+  hosts: slurm-controller
+  gather_facts: false
+
+  tasks:
+    - name: Execute "nproc --all" and store the output
+      command: nproc --all
+      register: nproc_output
+
+    - name: Execute free and store the total Mem value (converted to MB)
+      shell: free -m | awk '/Mem:/ {print $2}'
+      register: free_output
+
+    - name: Render Jinja template
+      delegate_to: localhost
+      template:
+        src: "{{ ansible_inventory_sources | first }}/group_vars/slurm-compute/slurm-compute.yml.j2"
+        dest: "{{ ansible_inventory_sources | first }}/group_vars/slurm-compute/slurm-compute.yml"
+      vars:
+        cpus: "{{ nproc_output.stdout }}"
+        real_memory: "{{ free_output.stdout }}"
