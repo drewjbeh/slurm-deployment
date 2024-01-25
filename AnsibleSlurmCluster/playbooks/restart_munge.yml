@@ -18,3 +18,10 @@
         name: slurmctld
         daemon_reload: true
         state: restarted
+
+- name: Mount NFS for compute nodes
+  hosts: slurm-compute
+  become: true
+  tasks:
+    - name: Mount nfs
+      command: mount -a
