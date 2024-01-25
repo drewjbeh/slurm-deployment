@@ -4,16 +4,8 @@
     name: nfs-common
     state: present
 
-- name: Create mount point directory
-  file:
-    path: /mnt/ceph
-    state: directory
-
 - name: Add NFS entry
   lineinfile:
     path: /etc/fstab
     line: "{{ slurm_controller_ip }}:/mnt/ceph /mnt/ceph nfs rw,hard 0 0"
     insertafter: EOF
-
-- name: Mount nfs
-  command: mount -a
