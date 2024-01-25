@@ -8,3 +8,13 @@
         name: munge
         daemon_reload: true
         state: restarted
+        
+- name: Restart slurmctld
+  hosts: slurm-controller
+  become: true
+  tasks:
+    - name: Restart slurmctld
+      systemd:
+        name: slurmctld
+        daemon_reload: true
+        state: restarted
