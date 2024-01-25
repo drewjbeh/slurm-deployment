@@ -1,4 +1,12 @@
 ---
+- name: Create mount point directory
+  file:
+    path: /mnt/ceph
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode:  "0755"
+
 - name: Update apt repository.
   apt:
     update_cache: true
