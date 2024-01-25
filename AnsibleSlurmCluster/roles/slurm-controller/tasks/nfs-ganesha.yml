@@ -10,11 +10,6 @@
     src: ganesha.conf.j2
     dest: /etc/ganesha/ganesha.conf
 
-- name: Create mount point directory
-  file:
-    path: /mnt/ceph
-    state: directory
-
 - name: Start nfs-ganesha service.
   systemd:
     name: nfs-ganesha
