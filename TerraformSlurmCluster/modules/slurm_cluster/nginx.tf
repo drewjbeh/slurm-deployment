@@ -1,8 +1,8 @@
 resource "openstack_blockstorage_volume_v3" "nginx_bootable_volume" {
-  region      = "RegionOne"
+  region      = var.region
   name        = "nginx-bootable-volume"
   size        = 20
-  volume_type = "ceph"
+  volume_type = var.volume_type
   image_id    = var.os_image_id
 }
 

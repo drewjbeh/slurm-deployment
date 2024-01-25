@@ -1,17 +1,17 @@
 resource "openstack_blockstorage_volume_v3" "compute_bootable_volume" {
-  region      = "RegionOne"
+  region      = var.region
   name        = "slurm-compute-bootable-volume-${count.index + 1}"
   size        = 20
-  volume_type = "ceph"
+  volume_type = var.volume_type
   image_id    = var.os_image_id
   count       = var.compute_instances_count
 }
 
 resource "openstack_blockstorage_volume_v3" "controller_bootable_volume" {
-  region      = "RegionOne"
+  region      = var.region
   name        = "slurm-controller-bootable-volume"
   size        = 20
-  volume_type = "ceph"
+  volume_type = var.volume_type
   image_id    = var.os_image_id
 }
 

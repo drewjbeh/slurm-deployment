@@ -1,8 +1,8 @@
 resource "openstack_blockstorage_volume_v3" "prometheus_bootable_volume" {
-  region      = "RegionOne"
+  region      = var.region
   name        = "prometheus-compute-bootable-volume"
   size        = 20
-  volume_type = "ceph"
+  volume_type = var.volume_type
   image_id    = var.os_image_id
 }
 
@@ -52,10 +52,10 @@ resource "openstack_compute_instance_v2" "prometheus-server" {
 }
 
 resource "openstack_blockstorage_volume_v3" "grafana_bootable_volume" {
-  region      = "RegionOne"
+  region      = var.region
   name        = "prometheus-compute-bootable-volume"
   size        = 20
-  volume_type = "ceph"
+  volume_type = var.volume_type
   image_id    = var.os_image_id
 }
 
