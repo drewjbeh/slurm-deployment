@@ -1,3 +1,8 @@
+variable "region" {
+  type = string
+  default = "RegionOne"
+}
+
 variable "key_pair" {
   type    = string
   default = "slurm"
@@ -13,7 +18,7 @@ variable "ubuntu_generic_image_id" {
   default = "b83723d6-13a0-4a9e-9e91-ca85ce10cfef"
 }
 
-variable "mini_flavor_id" {
+variable "default_flavor_id" {
   type = string
   default = "736b1189-1daf-46f1-ac2c-a9661f6f2b29"
 }
@@ -38,9 +43,8 @@ variable "volume_type" {
   default = "ceph"
 }
 
-variable "ipv6_external_network" {
+variable "external_network" {
   type = string
-  #default = "8f5b0e5e-e3bf-4b53-b680-30bc593213eb" # ID for internet network
   default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c" # ID for MWN network
 }
 
