@@ -13,6 +13,7 @@ module "slurm_cluster" {
   volume_size = var.volume_size
   volume_type = var.volume_type
 
-  external_network = var.external_network
+  external_network  = var.external_network
+  network_pool      = var.network_pool
   slurm_subnet_cidr = var.slurm_subnet_cidr
 }
