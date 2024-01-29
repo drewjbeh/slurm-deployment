@@ -49,6 +49,11 @@ variable "external_network" {
   description = "ID of the external network to be assigned/attached on the VMs."
 }
 
+variable "network_pool" {
+  type = string
+  description = "Network pool for floating IP association"
+}
+
 variable "slurm_subnet_cidr" {
   type = string
   description = "CIDR block for the SLURM internal network."
