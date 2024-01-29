@@ -51,6 +51,15 @@ resource "openstack_compute_instance_v2" "prometheus-server" {
   }
 }
 
+resource "openstack_networking_floatingip_v2" "fip_prometheus" {
+  pool = var.network_pool
+}
+
+resource "openstack_compute_floatingip_associate_v2" "fip_prometheus" {
+  floating_ip = openstack_networking_floatingip_v2.fip_prometheus.address
+  instance_id = openstack_compute_instance_v2.prometheus-server.id
+}
+
 resource "openstack_blockstorage_volume_v3" "grafana_bootable_volume" {
   region      = var.region
   name        = "prometheus-compute-bootable-volume"
@@ -103,4 +112,13 @@ resource "openstack_compute_instance_v2" "grafana" {
       "echo '127.0.0.1\t' $(hostnamectl | grep -i 'static hostname:' | cut -f2- -d:) | sudo tee -a /etc/hosts"
     ]
   }
+}
+
+resource "openstack_networking_floatingip_v2" "fip_grafana" {
+  pool = var.network_pool
+}
+
+resource "openstack_compute_floatingip_associate_v2" "fip_grafana" {
+  floating_ip = openstack_networking_floatingip_v2.fip_grafana.address
+  instance_id = openstack_compute_instance_v2.grafana.id
 }
