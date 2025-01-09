@@ -1,0 +1,9 @@
+---
+- name: Build docker image
+  community.docker.docker_image:
+    name: talos:local_none
+    build:
+      path: /mnt/ceph/talos
+      target: talos_none
+      network: host
+    source: build

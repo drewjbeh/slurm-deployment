@@ -1,0 +1,6 @@
+---
+- name: Clone Talos git repo
+  git:
+    repo: "https://github.com/populationgenomics/talos.git"
+    dest: /mnt/ceph/talos
+  become_user: ubuntu

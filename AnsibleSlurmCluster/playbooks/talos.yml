@@ -1,0 +1,13 @@
+---
+- name: Clone Talos 
+  hosts: slurm-controller
+  become: true
+  roles:
+    - talos_clone
+
+- name: Build Talos
+  hosts: slurm-cluster
+  become: true
+  roles:
+    - talos_build
+        

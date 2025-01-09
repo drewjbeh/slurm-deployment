@@ -3,7 +3,12 @@ import os
 import subprocess
 import time
 from pathlib import Path
-
+import argparse
+ 
+parser = argparse.ArgumentParser(description="Setup SLURM cluster with Terraform and Ansible",
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("-t", "--talos", action="store_true", help="Additionally install Talos pipeline and Docker images on nodes")
+args = parser.parse_args()
 
 def get_ansible_command(playbook_path, inventory_path):
     return [
@@ -96,6 +101,7 @@ controller_path = f"{playbooks_directory}/controller.yml"
 build_singularity_path = f"{playbooks_directory}/singularity.yml"
 munge = f"{playbooks_directory}/restart_munge.yml"
 hosts = f"{playbooks_directory}/update_hosts.yml"
+talos_path = f"{playbooks_directory}/talos.yml"
 
 common_command = get_ansible_command(common_path, inventory_path)
 monitoring_command = get_ansible_command(monitoring_path, inventory_path)
@@ -104,6 +110,7 @@ controller_command = get_ansible_command(controller_path, inventory_path)
 build_singularity_command = get_ansible_command(build_singularity_path, inventory_path)
 munge_command = get_ansible_command(munge, inventory_path)
 hosts_command = get_ansible_command(hosts, inventory_path)
+talos_command = get_ansible_command(talos_path, inventory_path)
 
 # wait for the VMs to be up and running
 #print("Wait for VMs to be up and running...")
@@ -147,6 +154,15 @@ if common_return_code == 0:
         print("update_hosts playbook did not finish successfully.")
 else:
     print(f"common.yml didn't execute successfully, had a return code {common_return_code}")
+
+if args.talos:
+    print("Additionally installing Talos reananlysis pipeline on nodes as specified")
+    talos_return_code = run_playbook(talos_command, ansible_working_directory, f"{ansible_logs_directory}/talos.txt")
+
+    if talos_return_code == 0:
+        print("talos playbook has finished successfully.")
+    else:
+        print("talos playbook did not finish successfully.")
 
 ansible_end = time.time()
 print(f"Ansible took {ansible_end - ansible_start} to finish")
