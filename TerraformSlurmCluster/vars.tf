@@ -49,6 +49,13 @@ variable "external_network" {
   #default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c" # ID for MWN network
 }
 
+variable "network_pool" {
+  # pool for floating IP association
+  # Depending if external_network is MWN or internet, this would also change
+  type = string
+  default = "internet_pool" 
+}
+
 variable "quobyte_network" {
   type = string
   default = "1a6b0612-ce39-4fa1-b24b-620ccee3c103"

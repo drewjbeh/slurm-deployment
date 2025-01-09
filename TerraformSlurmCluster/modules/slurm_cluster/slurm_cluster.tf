@@ -57,6 +57,15 @@ resource "openstack_compute_instance_v2" "terraform-slurm-controller" {
   depends_on = [openstack_networking_subnet_v2.slurm_subnet]
 }
 
+resource "openstack_networking_floatingip_v2" "fip_controller" {
+  pool = var.network_pool
+}
+
+resource "openstack_compute_floatingip_associate_v2" "fip_controller" {
+  floating_ip = openstack_networking_floatingip_v2.fip_controller.address
+  instance_id = openstack_compute_instance_v2.terraform-slurm-controller.id
+}
+
 resource "openstack_compute_instance_v2" "terraform-slurm-compute" {
   count           = var.compute_instances_count
   name            = "slurm-compute-${count.index + 1}"
