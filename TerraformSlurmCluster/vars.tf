@@ -35,7 +35,7 @@ variable "compute_instances_count" {
 
 variable "volume_size" {
   type = number
-  default = 200
+  default = 400
 }
 
 variable "volume_type" {
@@ -45,8 +45,8 @@ variable "volume_type" {
 
 variable "external_network" {
   type = string
-  default = "8f5b0e5e-e3bf-4b53-b680-30bc593213eb" # ID for internet network
-  #default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c" # ID for MWN network
+  #default = "8f5b0e5e-e3bf-4b53-b680-30bc593213eb" # ID for internet network
+  default = "3f1c6c34-2be9-44b3-9f21-c3e031ab8e5c" # ID for MWN network
 }
 
 variable "network_pool" {
