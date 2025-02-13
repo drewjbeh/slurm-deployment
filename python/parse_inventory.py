@@ -90,8 +90,8 @@ cgroup_conf: "{{{{ ansible_inventory_sources | first }}}}/group_vars/slurm-clust
 slurm_conf: "{{{{ ansible_inventory_sources | first }}}}/group_vars/slurm-cluster/slurm.conf.j2"
 """
 
-shutil.copy("confs/cgroup.conf", "inventory/group_vars/slurm-cluster")
-shutil.copy("confs/slurm.conf.j2", "inventory/group_vars/slurm-cluster")
+shutil.copy("../confs/cgroup.conf", "inventory/group_vars/slurm-cluster")
+shutil.copy("../confs/slurm.conf.j2", "inventory/group_vars/slurm-cluster")
 
 with open(f"inventory{os.sep}hosts.yml", "w") as file:
     yaml.safe_dump(hosts, file, default_style=None)
