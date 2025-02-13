@@ -3,16 +3,6 @@
 - name: detect installed node-exporter
   stat:
     path: "{{ node_exporter_install_dir }}/node_exporter_{{ node_exporter_version }}"
-    get_checksum: false
-    get_md5: false
-    get_mime: false
-    get_attributes: false
-  register: __stat_present_node_exporter
-  changed_when: not __stat_present_node_exporter.stat.exists
-
-- name: need download
-  set_fact:
-    should_download: true
-  when: not __stat_present_node_exporter.stat.exists
+  register: stat_node_exporter_exists
 
 ...
