@@ -5,12 +5,7 @@ variable "key_pair" {
 
 variable "ubuntu_jammy_image_id" {
   type = string
-  default = "de745356-afed-483b-8726-dc329390fd4d"
-}
-
-variable "ubuntu_generic_image_id" {
-  type = string
-  default = "760212aa-71c9-4d78-abd9-d71c6777700d"
+  default = "5f5a9f1c-2666-4eeb-a58c-0339378176c2"
 }
 
 variable "mini_flavor_id" {
@@ -41,11 +36,6 @@ variable "volume_type" {
 variable "ipv6_external_network" {
   type = string
   default = "1f4c65ef-dd53-4d85-b2d0-1fd1a178522c"
-}
-
-variable "quobyte_network" {
-  type = string
-  default = "1a6b0612-ce39-4fa1-b24b-620ccee3c103"
 }
 
 variable "slurm_subnet_cidr" {
