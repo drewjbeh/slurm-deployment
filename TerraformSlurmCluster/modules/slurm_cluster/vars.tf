@@ -38,11 +38,6 @@ variable "external_network" {
   description = "ID of the external network to be assigned/attached on the VMs."
 }
 
-variable "quobyte_network" {
-  type = string
-  description = "ID of the `quobyte` network in order to create a shared storage."
-}
-
 variable "slurm_subnet_cidr" {
   type = string
   description = "CIDR block for the SLURM internal network."
