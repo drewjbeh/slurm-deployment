@@ -10,7 +10,5 @@
   retries: 5
   delay: 2
   check_mode: false
-  when:
-    - should_download
 
 ...
