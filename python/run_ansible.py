@@ -72,7 +72,7 @@ if common_return_code == 0:
     print("Running restart_munge.yml playbook")
     run_playbook(commands["munge"], ANSIBLE_WORKING_DIRECTORY, f"{ANSIBLE_LOGS_DIRECTORY}/restart_munge.txt")
     print("Running mount.yml playbook")
-    run_playbook(commands["mount.yml"], ANSIBLE_WORKING_DIRECTORY, f"{ANSIBLE_LOGS_DIRECTORY}/mount.txt")
+    run_playbook(commands["mount"], ANSIBLE_WORKING_DIRECTORY, f"{ANSIBLE_LOGS_DIRECTORY}/mount.txt")
 
 ansible_end = time.time()
 print(f"Ansible took {ansible_end - ansible_start} to finish")
