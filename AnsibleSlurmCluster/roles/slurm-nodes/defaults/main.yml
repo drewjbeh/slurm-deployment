@@ -23,5 +23,5 @@ change_directory_ownership:
   - /run/slurm
   - /var/spool/slurm
 
-
-#32118 for 32GB
+nfs_entries:
+  - "{{ slurm_controller_name }}:/mnt/ceph /mnt/ceph nfs rw,hard 0 0"

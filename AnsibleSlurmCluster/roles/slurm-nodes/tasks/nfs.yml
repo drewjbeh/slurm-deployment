@@ -1,0 +1,13 @@
+---
+- name: Install nfs-common package.
+  apt:
+    name: nfs-common
+    state: present
+
+- name: Add NFS entry
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ item }}"
+    insertafter: EOF
+    state: present
+  loop: "{{ nfs_entries }}"

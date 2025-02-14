@@ -1,0 +1,16 @@
+{% for mount_point in mount_points %}
+EXPORT
+{
+  Export_Id = {{ loop.index }};
+  Path = {{ mount_point }};
+  Pseudo = {{ mount_point }};
+  Access_Type = RW;
+  Squash = None;
+  SecType = sys;
+  Protocols = 3,4;
+  FSAL
+  {
+    Name = VFS;
+  }
+}
+{% endfor %}

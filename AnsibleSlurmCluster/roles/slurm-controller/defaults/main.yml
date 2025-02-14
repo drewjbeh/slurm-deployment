@@ -17,3 +17,10 @@ slurm:
 
 volume_path: "/dev/vdb"
 volume_mount_point: "/mnt/ceph"
+
+nfs:
+  - nfs-ganesha
+  - nfs-ganesha-vfs
+
+mount_points:
+  - /mnt/ceph

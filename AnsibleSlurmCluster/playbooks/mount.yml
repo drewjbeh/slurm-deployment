@@ -1,0 +1,26 @@
+---
+- name: Mount NFS for compute nodes
+  hosts: slurm-compute
+  become: true
+  tasks:
+    - name: Create directory
+      file:
+       path: /mnt/ceph
+       state: directory
+       owner: ubuntu
+       group: ubuntu
+
+    - name: Mount nfs
+      command: mount -a
+
+- name: Update /mnt/ceph permissions
+  hosts: slurm-cluster
+  become: true
+  tasks:
+    - name: Change ownership to ubuntu
+      file:
+        state: directory
+        path: /mnt/ceph
+        recurse: true
+        owner: ubuntu
+        group: ubuntu

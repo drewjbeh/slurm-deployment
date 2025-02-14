@@ -48,7 +48,8 @@ commands = {
     "compute": get_ansible_command("compute_nodes.yml"),
     "controller": get_ansible_command("controller.yml"),
     "singularity": get_ansible_command("singularity.yml"),
-    "munge": get_ansible_command("restart_munge.yml")
+    "munge": get_ansible_command("restart_munge.yml"),
+    "mount": get_ansible_command("mount.yml")
 }
 
 # wait for the VMs to be up and running
@@ -65,12 +66,13 @@ if common_return_code == 0:
         print("Running monitoring.yml, compute_nodes.yml, controller.yml and singularity.yml concurrently")
         futures = {
             name: executor.submit(run_playbook, cmd, ANSIBLE_WORKING_DIRECTORY, f"{ANSIBLE_LOGS_DIRECTORY}/{name}.txt")
-            for name, cmd in commands.items() if name not in ["common", "munge"]}
+            for name, cmd in commands.items() if name not in ["common", "munge", "mount"]}
         concurrent.futures.wait(futures.values(), return_when=concurrent.futures.ALL_COMPLETED)
 
     print("Running restart_munge.yml playbook")
-    run_playbook(commands["munge"], ANSIBLE_WORKING_DIRECTORY,
-                 f"{ANSIBLE_LOGS_DIRECTORY}/restart_munge.txt")
+    run_playbook(commands["munge"], ANSIBLE_WORKING_DIRECTORY, f"{ANSIBLE_LOGS_DIRECTORY}/restart_munge.txt")
+    print("Running mount.yml playbook")
+    run_playbook(commands["mount"], ANSIBLE_WORKING_DIRECTORY, f"{ANSIBLE_LOGS_DIRECTORY}/mount.txt")
 
 ansible_end = time.time()
 print(f"Ansible took {ansible_end - ansible_start} to finish")
