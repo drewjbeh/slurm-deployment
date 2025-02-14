@@ -12,3 +12,15 @@
 
     - name: Mount nfs
       command: mount -a
+
+- name: Update /mnt/ceph permissions
+  hosts: slurm-cluster
+  become: true
+  tasks:
+    - name: Change ownership to ubuntu
+      file:
+        state: directory
+        path: /mnt/ceph
+        recurse: true
+        owner: ubuntu
+        group: ubuntu
