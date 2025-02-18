@@ -1,0 +1,76 @@
+---
+- name: "Check if micromamba already exists"
+  ansible.builtin.stat:
+    path: "{{ micromamba_destination }}"
+    get_checksum: true
+    checksum_algorithm: "sha256"
+    follow: true
+  register: micromamba_dest_stat
+
+- name: Map platform to value
+  ansible.builtin.set_fact:
+    micromamba_platform: "{{ micromamba_platform_mapping[ansible_system][ansible_machine] | default('unknown-platform') }}"
+
+- name: Fail if platform is unsupported
+  ansible.builtin.fail:
+    msg: >
+      "Unsupported platform: {{ ansible_system }} {{ ansible_machine }}. 
+       Please update micromamba_platform_mapping."
+  when: micromamba_platform == "unknown-platform"
+
+- name: Construct the micromamba URL
+  ansible.builtin.set_fact:
+    micromamba_url: "{{ micromamba_base_url }}"
+  vars:
+    platform: "{{ micromamba_platform }}"
+
+- name: Construct the micromamba SHA256 URL
+  ansible.builtin.set_fact:
+    micromamba_sha256_url: "{{ micromamba_sha256_base_url }}"
+  vars:
+    platform: "{{ micromamba_platform }}"
+
+- name: Fetch SHA256 checksum
+  ansible.builtin.uri:
+    url: "{{ micromamba_sha256_url }}"
+    return_content: yes
+  register: sha256_checksum
+
+# install micromamba
+- name: Install micromamba
+  ansible.builtin.get_url:
+    url: "{{ micromamba_url }}"
+    dest: "{{ micromamba_destination }}"
+    checksum: sha256:{{ sha256_checksum.content }}
+    mode: '0755'
+  register: result
+  until: result is succeeded
+  retries: 3
+  delay: 10
+  when: not micromamba_dest_stat.stat.exists or micromamba_dest_stat.stat.checksum != sha256_checksum.content
+
+- name: Export micromamba_destination
+  ansible.builtin.set_fact:
+    conda_exe: "{{ micromamba_destination }}"
+  when: conda_exe is not defined
+
+- name: Ensure micromamba_init.sh exists with correct content
+  copy:
+    dest: /etc/profile.d/micromamba_init.sh
+    content: |
+      eval $({{ micromamba_destination }} shell hook --root-prefix {{ micromamba_base_env_prefix }} --shell=$(basename $SHELL))
+      # >>> mamba initialize >>>
+      # !! Contents within this block are managed by 'micromamba shell init' !!
+      export MAMBA_EXE='{{ micromamba_destination }}';
+      export MAMBA_ROOT_PREFIX='{{ micromamba_base_env_prefix }}';
+      __mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+      if [ $? -eq 0 ]; then
+          eval "$__mamba_setup"
+      else
+          alias micromamba="$MAMBA_EXE"  # Fallback on help from micromamba activate
+      fi
+      unset __mamba_setup
+      # <<< mamba initialize <<<
+    owner: root
+    group: root
+    mode: '0644'

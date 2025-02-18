@@ -1,0 +1,3 @@
+micromamba_version: latest
+micromamba_destination: '/usr/local/bin/micromamba'
+micromamba_base_env_prefix: '/opt/conda_envs'

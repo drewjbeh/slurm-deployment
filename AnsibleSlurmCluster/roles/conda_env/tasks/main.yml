@@ -1,0 +1,88 @@
+---
+- name: Ensure required variables are defined
+  fail:
+    msg: "The required variable '{{ item }}' is not defined."
+  with_items:
+    - conda_exe
+    - conda_env_spec_file
+  when: item is not defined
+
+- name: Check if prefix is a valid conda environment
+  ansible.builtin.shell: >-
+    {{ conda_exe }} list
+    {% if conda_prefix | default(False) %}
+    --prefix "{{ conda_prefix }}"
+    {% endif %}
+    {% if conda_env_name | default(False) %}
+    --name "{{ conda_env_name }}"
+    {% endif %}
+    --json
+  register: conda_list_output
+  ignore_errors: true  # Allow the task to continue even if the prefix is invalid
+  changed_when: false  # Always assume this task does not make changes
+
+- name: Parse conda output
+  ansible.builtin.set_fact:
+    is_valid_env: >-
+      {{
+        conda_list_output.rc == 0 and
+        conda_list_output.stdout | from_json | length > 0
+      }}
+
+- name: Install environment
+  when: not is_valid_env
+  ansible.builtin.shell: >-
+    {{ conda_exe }} env create
+    --file {{ conda_env_spec_file }}
+    {% if conda_prefix | default(False) %}
+    --prefix "{{ conda_prefix }}"
+    {% endif %}
+    {% if conda_env_name | default(False) %}
+    --name "{{ conda_env_name }}"
+    {% endif %}
+    --json
+    -y
+  register: conda_env_update_output
+  changed_when: >
+    conda_env_update_output.stdout | from_json | json_query('actions') is defined
+
+
+- name: Update environment
+  when: is_valid_env
+  block:
+    - name: Run "conda env update" to match the environment to the spec file
+      ansible.builtin.shell: >-
+        {{ conda_exe }} env update
+        --file {{ conda_env_spec_file }}
+        {% if conda_prefix | default(False) %}
+        --prefix "{{ conda_prefix }}"
+        {% endif %}
+        {% if conda_env_name | default(False) %}
+        --name "{{ conda_env_name }}"
+        {% endif %}
+        --json
+        -y
+      register: cmd_output
+      changed_when: >
+        cmd_output.stdout | from_json | json_query('actions') is defined
+      failed_when: >
+        cmd_output.rc != 0 or
+        (cmd_output.stdout | from_json).success == false
+    - name: Run "conda update" to update packages within the environment
+      ansible.builtin.shell: >-
+        {{ conda_exe }} update
+        --file {{ conda_env_spec_file }}
+        {% if conda_prefix | default(False) %}
+        --prefix "{{ conda_prefix }}"
+        {% endif %}
+        {% if conda_env_name | default(False) %}
+        --name "{{ conda_env_name }}"
+        {% endif %}
+        --json
+        -y
+      register: cmd_output
+      changed_when: >
+        cmd_output.stdout | from_json | json_query('actions') is defined
+      failed_when: >-
+        cmd_output.rc != 0 or
+        (cmd_output.stdout | from_json).success == false

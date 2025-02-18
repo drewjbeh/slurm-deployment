@@ -1,0 +1,14 @@
+---
+# Defaults for conda environment management variables (overwrite during role inclusion)
+
+# Install micromamba as conda provider by default
+conda_env_install_micromamba: true
+# Conda executable (path or command).
+#   Will be set to micromamba in case `conda_env_install_micromamba` is enabled
+conda_exe: "{{ 'conda' if not conda_env_install_micromamba else micromamba_destination }}"
+# The specification file for the Conda environment (required)
+conda_env_spec_file: null
+# Optional: The prefix for the Conda environment
+conda_prefix: null
+# Optional: The name of the Conda environment
+conda_env_name: null
